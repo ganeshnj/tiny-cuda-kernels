@@ -14,6 +14,7 @@ endif()
 find_package(CUDAToolkit REQUIRED)
 
 add_library(tck_kernels STATIC
+  src/matmul/01_naive_gemm.cu
   src/vector_add/vector_add.cu
 )
 
@@ -35,6 +36,10 @@ add_executable(vector_add
   src/vector_add_main.cu
 )
 
+add_executable(matmul_naive
+  src/matmul_naive_main.cu
+)
+
 target_include_directories(vector_add
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -46,6 +51,16 @@ target_link_libraries(vector_add
     CUDA::cudart
 )
 
+target_link_libraries(matmul_naive
+  PRIVATE
+    tck_kernels
+    CUDA::cudart
+)
+
 set_target_properties(vector_add PROPERTIES
+  CUDA_SEPARABLE_COMPILATION ON
+)
+
+set_target_properties(matmul_naive PROPERTIES
   CUDA_SEPARABLE_COMPILATION ON
 )

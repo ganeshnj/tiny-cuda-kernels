@@ -52,6 +52,12 @@ That runs `vector_add` with defaults:
 - `iterations = 100`
 - `warmup = 10`
 
+Run naive GEMM (M N K iterations warmup):
+
+```bash
+./scripts/run_on_jetson.sh matmul_naive 512 512 512 20 5
+```
+
 Or run any built target directly:
 
 ```bash
@@ -72,6 +78,12 @@ For CSV-friendly summary output:
 
 ```bash
 ./scripts/run_on_jetson.sh vector_add 16777216 200 20 --csv
+```
+
+Naive GEMM CSV output:
+
+```bash
+./scripts/run_on_jetson.sh matmul_naive 512 512 512 20 5 --csv
 ```
 
 CSV columns:
@@ -104,6 +116,12 @@ Generate an Nsight Compute report for any target on Jetson and copy it back loca
 ./scripts/profile_on_jetson_ncu.sh vector_add 16777216 50 10
 ```
 
+Naive GEMM profiling example:
+
+```bash
+./scripts/profile_on_jetson_ncu.sh matmul_naive 512 512 512 20 5
+```
+
 Generic profiling arguments:
 
 - `<target>` executable name under `build/`
@@ -113,6 +131,18 @@ Optional report tag:
 
 ```bash
 REPORT_TAG=my_run ./scripts/profile_on_jetson_ncu.sh vector_add 16777216 50 10
+```
+
+Suggested report tag convention:
+
+- `matmul_naive_01_baseline`
+- `matmul_naive_02_blocksize_tune`
+- `matmul_naive_03_vectorized`
+
+Example:
+
+```bash
+REPORT_TAG=matmul_naive_01_baseline ./scripts/profile_on_jetson_ncu.sh matmul_naive 512 512 512 20 5
 ```
 
 Environment options:
